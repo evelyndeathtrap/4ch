@@ -24,55 +24,5 @@ function processHtmlContent(dirtyHtml) {
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0)
-        .join('\n')
-	.replaceAll("\r", "")
-	.replaceAll("&gt;", ">");
-    // Return the result
-    return finalOutput;
-}
+4ch.js
 
-let astoria = new Astoria({
-	interval: 1, // 5 mins
-	updatesOnly: true // We're only interested in threads posted from now
-})
-
-function watch(board) {
-astoria.board(board)
-	.listen((context, threads, err) => {
-		if (err) {
-			return console.log(err)
-		}
-
-		threads.forEach(thread => {
-if (thread.com)
-console.log(processHtmlContent(thread.com));
-let unsubscribe = astoria.board(board)
-	.thread(thread.no)
-	.listen((context, posts, err) => {
-		if (err) {
-			unsubscribe();
-			return;
-		}
-
-		posts.forEach(post => {
-if (post.com)
-		console.log(processHtmlContent(post.com));
-		})
-
-		// Stop listening
-		unsubscribe()
-	})
-		})
-	})
-}
-
-fetch("https://a.4cdn.org/boards.json").then( (json) =>
-{
- return json.json()
-}).then(json =>
-{
- json.boards.forEach(board =>
-{
- watch(board.board)
-})
-})
